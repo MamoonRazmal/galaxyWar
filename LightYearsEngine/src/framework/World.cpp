@@ -23,13 +23,28 @@ namespace ly
 			actor->BeginPlayInteral();
 		}
 		mpendingActors.clear();
-		for (shared<Actor> actor : mActors)
+		for (auto iter = mActors.begin();iter != mActors.end();)
 		{
-			actor->Tick(deltaTime);
+			if (iter->get()->IsPendingDestroy())
+			{
+				iter = mActors.erase(iter);
+			}
+			else
+			{
+				iter->get()->Tick(deltaTime);
+				++iter;
+			}
 		}
 		
 		Tick(deltaTime);
 
+	}
+	void World::Render(sf::RenderWindow& window)
+	{
+		for (auto& actor : mActors)
+		{
+			actor->Render(window);
+		}
 	}
 	World::~World()
 	{

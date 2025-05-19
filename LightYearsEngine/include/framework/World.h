@@ -1,5 +1,6 @@
 #pragma once
 #include "framework/Core.h"
+#include <SFML/Graphics.hpp>
 namespace ly
 {
 	class Actor;
@@ -11,6 +12,7 @@ namespace ly
 		
 		void BeginPlayInternel();
 		void TickInternal(float deltaTime);
+		void Render(sf::RenderWindow& window);
 		template <typename ActorType>
 		weak<ActorType> spawnActor();
 		

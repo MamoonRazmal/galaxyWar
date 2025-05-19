@@ -5,10 +5,11 @@
 #include "framework/World.h"
 namespace ly
 {
-	Application::Application():mWindow{ sf::VideoMode({ 1024,900 }), "Light Years" },mTargetFrameRate{60.f},mTickClock{},currentWorld{nullptr}
-	{
-	}
-	void Application::Run()
+
+    Application::Application(unsigned int windowWidth, unsigned int windowHeight, const std::string& title, uint32_t style) :mWindow{ sf::VideoMode({ windowWidth,windowHeight }), title,style}, mTargetFrameRate{ 60.f }, mTickClock{}, currentWorld{ nullptr }
+    {
+    }
+    void Application::Run()
 	{
 	
         mTickClock.restart();
@@ -55,6 +56,7 @@ namespace ly
     {
  
         mWindow.clear();
+        mWindow.setVerticalSyncEnabled(false); // Add after window creation
         Render();
         mWindow.display();
       
@@ -63,14 +65,10 @@ namespace ly
 
     void Application::Render()
     {
-        sf::RectangleShape rectangle;
-        rectangle.setSize(sf::Vector2f(100, 50));
-        rectangle.setOutlineColor(sf::Color::Red);
-        rectangle.setOutlineThickness(5);
-        rectangle.setOrigin({ 50,50 });
-        //  rectangle.setPosition({10, 20});
-        rectangle.setPosition({ mWindow.getSize().x / 2.f,mWindow.getSize().y / 2.f });
-        mWindow.draw(rectangle);
+        if (currentWorld)
+        {
+            currentWorld->Render(mWindow);
+      }
     }
 
     void Application::Tick(float deltatime)

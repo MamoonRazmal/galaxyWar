@@ -1,10 +1,50 @@
 #include "framework/Actor.h"
 #include "framework/Core.h"
 #include "framework/Actor.h"
+#include "framework/AssetManager.h"
+#include <iostream>
+#include <SFML/Graphics.hpp>
+
+
+
+
+#include <SFML/Graphics.hpp>
+
+
+
 namespace ly
+
 {
-	ly::Actor::Actor(World* ownworld):mOwningWorld{ownworld},mHasBeganPlay{false}
+
+
+	sf::Texture& getDummyTexture()
 	{
+		static sf::Texture dummy;
+		static bool initialized = false;
+
+		if (!initialized) {
+			sf::Image image({ 1, 1 }, sf::Color::White); // 1x1 white pixel
+			if (!dummy.loadFromImage(image)) {
+				std::cerr << "Dummy texture creation failed\n";
+				throw std::runtime_error("Failed to create dummy texture");
+			}
+			initialized = true;
+		}
+		return dummy;
+	}
+
+	ly::Actor::Actor(World* ownworld, const std::string& texturpath ): mOwningWorld{ownworld}, mHasBeganPlay{false},  mTexture{}, mSprite{ getDummyTexture() }
+	{
+		if (!texturpath.empty())
+		{
+			std::cout << "Constructor received path: '" << texturpath << "'" << std::endl;
+
+			setTexture(texturpath);
+		}
+	
+		
+		//mSprite = new Sprite{ mTexture };
+		
 	}
 	void Actor::BeginPlayInteral()
 	{
@@ -18,12 +58,48 @@ namespace ly
 	{
 		LOG("Actor begin play");
 	}
+	void Actor::TickInternal(float deltaTime)
+	{
+		if (!IsPendingDestroy())
+		{
+			Tick(deltaTime);
+
+		}
+	}
 	void Actor::Tick(float deltatyme)
 	{
 		LOG("user is ticking");
 	}
 	ly::Actor::~Actor()
 	{
+		LOG("Actor Destroyed");
+	}
+
+	void Actor::setTexture(const std::string& path)
+	{
+		AssetManager& assetManager = AssetManager::Get();
+
+		if (path.empty()) {
+			std::cerr << "Warning: Empty texture path\n";
+			return;
+		}
+		mTexture = assetManager.LoadTexture(path);
+		if (mTexture ==nullptr) {
+		
+			return;
+		}
+
+		mSprite.setTexture(*mTexture, true); // 'true' resets texture rect
+	//	int textureWidth = mTexture->getSize().x;
+	//	int TextureHeight = mTexture->getSize().y;
+	//	mSprite.setTextureRect(sf::IntRect{ sf::Vector2i{}, sf::Vector2i{ textureWidth,TextureHeight } });
+	}
+	void Actor::Render(sf::RenderWindow& window)
+	{
+		if (IsPendingDestroy())
+			return;
+
+		window.draw(mSprite);
 	}
 }
 

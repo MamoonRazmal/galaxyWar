@@ -19,7 +19,7 @@ namespace ly
 	template <typename keytype , typename valType , typename pr = std::less<keytype>>
 	using Map = std::map<keytype, valType,pr>;
 
-	template <typename keytype, typename valType, typename hasher = std::less<keytype>>
+	template <typename keytype, typename valType, typename hasher = std::hash<keytype>>
 	using Dictionary = std::unordered_map<keytype, valType, hasher>;
 	#define LOG(M, ...) printf(M "\n", ##__VA_ARGS__)
 }
