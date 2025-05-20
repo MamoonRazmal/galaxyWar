@@ -21,7 +21,7 @@ namespace ly
 			return found->second;
 		}
 		shared<sf::Texture> newTexture{ new sf::Texture };
-		if (newTexture->loadFromFile(path))
+		if (newTexture->loadFromFile(mRootDirectory+path))
 		{
 			mLoadedTextureMap.insert({ path, newTexture });
 			return newTexture;
@@ -30,7 +30,29 @@ namespace ly
 		return shared<sf::Texture> {nullptr};
 
 	}
-	AssetManager::AssetManager()
+	void AssetManager::SetAssetRootDirectory(const std::string& directory)
+	{
+		mRootDirectory = directory;
+	}
+	void AssetManager::CleanCycle()
+	{
+		/*
+		for (auto iter = mLoadedTextureMap.begin();iter != mLoadedTextureMap.end();)
+		{
+			if (iter->second.unique())
+			{
+				LOG("cleaning texture : &s", iter->first);
+				iter = mLoadedTextureMap.erase(iter);
+			}
+			else
+			{
+				iter++;
+			}
+
+		}
+		*/
+	}
+	AssetManager::AssetManager():mRootDirectory{}
 	{
 
 	}

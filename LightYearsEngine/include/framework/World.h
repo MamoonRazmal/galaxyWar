@@ -1,10 +1,11 @@
 #pragma once
 #include "framework/Core.h"
 #include <SFML/Graphics.hpp>
+#include "framework/Application.h"
 namespace ly
 {
 	class Actor;
-	class Application;
+	//class Application;
 	class World
 	{
 	public:
@@ -15,7 +16,7 @@ namespace ly
 		void Render(sf::RenderWindow& window);
 		template <typename ActorType>
 		weak<ActorType> spawnActor();
-		
+		sf::Vector2u GetWindowSize()const { return mOwningApp->GetWindowSize(); }
 		virtual ~World();
 	private:
 		void BeginPlay();

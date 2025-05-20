@@ -55,6 +55,6 @@ namespace ly
 	}
 	void World::Tick(float delta)
 	{
-		LOG("ticking at framerate : %f\n", 1.f / delta);
+	//	LOG("ticking at framerate : %f\n", 1.f / delta);
 	}
 }

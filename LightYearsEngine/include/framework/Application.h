@@ -12,7 +12,7 @@ namespace ly
 		 void Run();
 		 template<typename WorldType>
 		 weak<WorldType> LoadWorld();
-		 
+		 sf::Vector2u GetWindowSize() const;
 	private :
 		sf::RenderWindow mWindow;
 		float mTargetFrameRate;
@@ -22,6 +22,9 @@ namespace ly
 		virtual void Render();
 		virtual void Tick(float deltatime);
 		shared<World> currentWorld;
+		sf::Clock mCleanCycleClock;
+		float mCleanCycleIterval;
+	
 	};
 
 

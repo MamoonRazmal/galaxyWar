@@ -3,10 +3,11 @@
 #include <stdio.h>
 #include <framework/Core.h>
 #include "framework/World.h"
+#include "framework/AssetManager.h"
 namespace ly
 {
 
-    Application::Application(unsigned int windowWidth, unsigned int windowHeight, const std::string& title, uint32_t style) :mWindow{ sf::VideoMode({ windowWidth,windowHeight }), title,style}, mTargetFrameRate{ 60.f }, mTickClock{}, currentWorld{ nullptr }
+    Application::Application(unsigned int windowWidth, unsigned int windowHeight, const std::string& title, uint32_t style) :mWindow{ sf::VideoMode({ windowWidth,windowHeight }), title,style}, mTargetFrameRate{ 60.f }, mTickClock{}, currentWorld{ nullptr },mCleanCycleClock{},mCleanCycleIterval{2.f}
     {
     }
     void Application::Run()
@@ -41,6 +42,11 @@ namespace ly
 	
 	}
 
+    sf::Vector2u Application::GetWindowSize() const
+    {
+         return mWindow.getSize(); 
+    }
+
     void Application::TickInternal(float deltatime)
     {
         Tick(deltatime);
@@ -48,6 +54,11 @@ namespace ly
         {
            
             currentWorld->TickInternal(deltatime);
+        }
+        if (mCleanCycleClock.getElapsedTime().asSeconds() >= mCleanCycleIterval)
+        {
+            mCleanCycleClock.restart();
+            AssetManager::Get().CleanCycle();
         }
        
     }
