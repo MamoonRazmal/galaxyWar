@@ -7,7 +7,7 @@
 
 namespace ly
 {
-	PlayerSpaceship::PlayerSpaceship(World* ownworld, const std::string& path) :Spaceship{ ownworld,path }, mMoveInput{}, mSpeed{ 200.f }, mShooter{ new BulletShooter{this} }
+	PlayerSpaceship::PlayerSpaceship(World* ownworld, const std::string& path) :Spaceship{ ownworld,path }, mMoveInput{}, mSpeed{ 200.f }, mShooter{ new BulletShooter{this,0.2f} }
 	{
 	}
 

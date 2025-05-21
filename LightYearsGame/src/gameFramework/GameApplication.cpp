@@ -19,7 +19,7 @@ namespace ly
 		testPlayerSpaceShip = newWorld.lock()->spawnActor<PlayerSpaceship>();
 		testPlayerSpaceShip.lock()->setTexture(GetResourceDir() + "SpaceShooterRedux/PNG/playerShip1_blue.png");
 		testPlayerSpaceShip.lock()->SetActorLocation(sf::Vector2f(300, 299));
-		sf::Angle a = sf::degrees({ 0.f });
+		sf::Angle a = sf::degrees({0.f });
 		testPlayerSpaceShip.lock()->setActorRotation(a);
 		
 

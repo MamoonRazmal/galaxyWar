@@ -28,6 +28,9 @@ namespace ly
 		sf::Vector2f GetActorForwardDirection() const;
 		sf::Vector2f GetActorRightDirection() const;
 		sf::Vector2u GetWindowsSize()const { return mOwningWorld->GetWindowSize(); }
+		World* GetWorld() const { return mOwningWorld; }
+		bool IsActorOutOfWindowBounds()const;
+		sf::FloatRect GetActorGlobalBounds()const;
 	
 	private:
 		void CenterPivot();

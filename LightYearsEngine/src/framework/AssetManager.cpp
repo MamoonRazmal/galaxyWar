@@ -41,7 +41,7 @@ namespace ly
 		{
 			if (iter->second.unique())
 			{
-				LOG("cleaning texture : &s", iter->first);
+			//	LOG("cleaning texture : &s", iter->first);
 				iter = mLoadedTextureMap.erase(iter);
 			}
 			else
@@ -51,7 +51,10 @@ namespace ly
 
 		}
 		*/
+		
+		
 	}
+	
 	AssetManager::AssetManager():mRootDirectory{}
 	{
 
