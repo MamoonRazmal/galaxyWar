@@ -3,7 +3,7 @@
 #include "framework/Object.h"
 #include "framework/Core.h"
 #include "framework/World.h"
-
+class b2Body;
 namespace ly
 {
 	
@@ -31,7 +31,10 @@ namespace ly
 		World* GetWorld() const { return mOwningWorld; }
 		bool IsActorOutOfWindowBounds()const;
 		sf::FloatRect GetActorGlobalBounds()const;
-	
+		void SetEnablePhysics(bool enable);
+		 virtual void OnActorBeginOverlap(Actor* actor);
+		 virtual void OnActorEndOverlap(Actor* actor);
+		 virtual void Destroy()override;
 	private:
 		void CenterPivot();
 		World* mOwningWorld;
@@ -39,7 +42,11 @@ namespace ly
 		shared<sf::Texture> mTexture;
 		sf::Texture empythTexture;
 		sf::Sprite mSprite;
-	
+		b2Body* mphysicBody;
+		void UpdatePhysicsBodyTransform();
+		bool mEnablePhysics;
+		void InitiallizePhysics();
+		void UnInitializePhysics();
 		
 	};
 }

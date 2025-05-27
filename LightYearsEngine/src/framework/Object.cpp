@@ -1,6 +1,9 @@
 
 #include <framework/Object.h>
-#include <framework/Core.h>
+
+
+#include <framework/Actor.h>
+
 
 namespace ly
 {
@@ -9,10 +12,21 @@ namespace ly
 	{
 		LOG("Destroy");
 	}
-}
 
-void ly::Object::Destroy()
-{
-	mIsPendingDestroy = true;
 
+	void ly::Object::Destroy()
+	{
+		onDestroy.Broadcast(this);
+		mIsPendingDestroy = true;
+
+	}
+
+	weak<Object> ly::Object::GetSelfWeakRef()
+	{
+		return weak_from_this();
+	}
+	weak<const Object> ly::Object::GetSelfWeakRef() const
+	{
+		return weak_from_this();
+	}
 }

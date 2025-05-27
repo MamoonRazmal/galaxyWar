@@ -26,6 +26,13 @@ namespace ly
 		}
 	}
 
+	void Bullet::BeginPlay()
+	{
+		Actor::BeginPlay();
+		SetEnablePhysics(true);
+
+	}
+
 	void Bullet::Move(float deltaTime)
 	{
 

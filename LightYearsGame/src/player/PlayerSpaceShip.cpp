@@ -85,7 +85,7 @@ namespace ly
 	void PlayerSpaceship::NormalizeInput()
 	{
 		 Normalize(mMoveInput);
-		 LOG("Move input is now : %f,%f", mMoveInput.x, mMoveInput.y);
+		// LOG("Move input is now : %f,%f", mMoveInput.x, mMoveInput.y);
 	}
 
 	

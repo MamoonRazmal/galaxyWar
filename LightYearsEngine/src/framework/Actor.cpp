@@ -1,15 +1,13 @@
 #include "framework/Actor.h"
 #include "framework/Core.h"
-#include "framework/Actor.h"
+
 #include "framework/AssetManager.h"
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
 #include "framework/MathUtility.h"
 
-
-#include <SFML/Graphics.hpp>
-#include "framework/Actor.h"
+#include "framework/PhysicsSystem.h"
 
 
 
@@ -34,11 +32,11 @@ namespace ly
 		return dummy;
 	}
 
-	ly::Actor::Actor(World* ownworld, const std::string& texturpath ): mOwningWorld{ownworld}, mHasBeganPlay{false},  mTexture{}, mSprite{ getDummyTexture() }
+	ly::Actor::Actor(World* ownworld, const std::string& texturpath ): mOwningWorld{ownworld}, mHasBeganPlay{false},  mTexture{}, mSprite{ getDummyTexture() },mphysicBody{nullptr},mEnablePhysics{false}
 	{
 		if (!texturpath.empty())
 		{
-			std::cout << "Constructor received path: '" << texturpath << "'" << std::endl;
+		//	std::cout << "Constructor received path: '" << texturpath << "'" << std::endl;
 
 			setTexture(texturpath);
 		}
@@ -107,12 +105,14 @@ namespace ly
 	void ly::Actor::SetActorLocation(const sf::Vector2f& newL)
 	{
 		mSprite.setPosition(newL);
+		UpdatePhysicsBodyTransform();
 	}
 	void Actor::setActorRotation(const sf::Angle angle)
 	{
 	//	sf::Angle angle = sf::degrees(newRot);
 
 		mSprite.setRotation(angle);
+		UpdatePhysicsBodyTransform();
 	}
 	void Actor::AddActorLocationOffset(const sf::Vector2f& offsetAmt)
 	{
@@ -147,6 +147,32 @@ namespace ly
 		sf::FloatRect bound = mSprite.getGlobalBounds();
 		mSprite.setOrigin(bound.getCenter());
 	}
+	void Actor::UpdatePhysicsBodyTransform()
+	{
+		if (mphysicBody)
+		{
+			float physicsScale = PhysicsSystem::Get().GetPhysicScale();
+			b2Vec2 pos{ GetActorLocation().x * physicsScale,GetActorLocation().y * physicsScale };
+			float rotation = DegreesToRadians(GetActorRotation().asRadians());
+			mphysicBody->SetTransform(pos,rotation);
+		}
+	}
+	void Actor::InitiallizePhysics()
+	{
+		if (!mphysicBody)
+			mphysicBody = PhysicsSystem::Get().AddListener(this);
+
+
+	}
+	void Actor::UnInitializePhysics()
+	{
+		if (mphysicBody)
+		{
+			PhysicsSystem::Get().RemoveListener(mphysicBody);
+			mphysicBody = nullptr;
+		}
+		
+	}
 	bool Actor::IsActorOutOfWindowBounds()const
 	{
 		float windwidth = GetWorld()->GetWindowSize().x;
@@ -176,6 +202,31 @@ namespace ly
 	sf::FloatRect Actor::GetActorGlobalBounds()const
 	{
 		return mSprite.getGlobalBounds();
+	}
+	void ly::Actor::SetEnablePhysics(bool enable)
+	{
+		mEnablePhysics = true;
+		if (mEnablePhysics)
+		{
+			InitiallizePhysics();
+		}
+		else
+		{
+			UnInitializePhysics();
+		}
+	}
+	void Actor::OnActorBeginOverlap(Actor* actor)
+	{
+		LOG("over lap begin");
+	}
+	void Actor::OnActorEndOverlap(Actor* actor)
+	{
+		LOG("over lap finished");
+	}
+	void Actor::Destroy()
+	{
+		UnInitializePhysics();
+		Object::Destroy();
 	}
 }
 

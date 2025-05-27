@@ -2,9 +2,10 @@
 #include "framework/Actor.h"
 
 
+
 namespace ly
 {
-	Spaceship::Spaceship(World* ownworld, const std::string& texturePath):Actor{ownworld,texturePath},mVelocity{}
+	Spaceship::Spaceship(World* ownworld, const std::string& texturePath):Actor{ownworld,texturePath},mVelocity{},mHealthComp{100.f,100.f}
 	{
 	}
 
@@ -26,6 +27,20 @@ namespace ly
 
 	void Spaceship::Shoot()
 	{
+	}
+
+	void Spaceship::BeginPlay()
+	{
+		Actor::BeginPlay();
+		SetEnablePhysics(true);
+		weak<Object> selfRef = GetSelfWeakRef();
+		mHealthComp.OnHealthChanged.BindAction(GetSelfWeakRef(), &Spaceship::OnHealthChanged);
+		mHealthComp.OnHealthChanged.Broadcast(11,89,100);
+	}
+
+	void Spaceship::OnHealthChanged(float amt, float health, float maxhealth)
+	{
+		LOG("healthchanged by :%f and now is %f/%f", amt, health, maxhealth);
 	}
 
 }

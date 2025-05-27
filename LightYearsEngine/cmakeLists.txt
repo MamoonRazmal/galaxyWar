@@ -11,7 +11,7 @@ ${CMAKE_CURRENT_SOURCE_DIR}/include/framework/Application.h
  ${CMAKE_CURRENT_SOURCE_DIR}/src/framework/AssetManager.cpp
  ${CMAKE_CURRENT_SOURCE_DIR}/include/framework/MathUtility.h	
  ${CMAKE_CURRENT_SOURCE_DIR}/src/framework/MathUtility.cpp
-   "include/framework/PhysicsSystem.h" "src/framework/PhysicsSystem.cpp")
+   "include/framework/PhysicsSystem.h" "src/framework/PhysicsSystem.cpp" "include/framework/Delegate.h" "src/framework/Delegate.cpp")
 
 
 target_include_directories(${LIGHT_YEARS_ENGINE_TARGET_NAME} PUBLIC  ${CMAKE_CURRENT_SOURCE_DIR}/include )
