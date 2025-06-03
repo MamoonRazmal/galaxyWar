@@ -1,9 +1,13 @@
 #pragma once
 #include<memory>
-#include"Core.h"
 #include "framework/Delegate.h"
+#include "Delegate.h"
+
+#include"framework/Core.h"
+
 namespace ly
 {
+	
 	class Object : public std::enable_shared_from_this<Object>
 	{
 	public :

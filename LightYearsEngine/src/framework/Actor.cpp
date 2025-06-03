@@ -11,6 +11,7 @@
 
 
 
+
 namespace ly
 
 {
@@ -32,7 +33,7 @@ namespace ly
 		return dummy;
 	}
 
-	ly::Actor::Actor(World* ownworld, const std::string& texturpath ): mOwningWorld{ownworld}, mHasBeganPlay{false},  mTexture{}, mSprite{ getDummyTexture() },mphysicBody{nullptr},mEnablePhysics{false}
+	ly::Actor::Actor(World* ownworld, const std::string& texturpath ): mOwningWorld{ownworld}, mHasBeganPlay{false},  mTexture{}, mSprite{ getDummyTexture() },mphysicBody{nullptr},mEnablePhysics{false},mTeamID{ GetNeutralTeamID()}
 	{
 		if (!texturpath.empty())
 		{
@@ -141,6 +142,18 @@ namespace ly
 	{
 		sf::Angle deg = sf::degrees(0.f);
 		return RotationToVector(GetActorRotation() +deg);
+	}
+	bool Actor::IsOtherHostile(Actor* actor) const
+	{
+		if (GetTeamID() == GetNeutralTeamID() || actor->GetTeamID() == GetNeutralTeamID())
+		{
+			return false;
+		}
+		return GetTeamID() != actor->GetTeamID();
+	}
+	void Actor::ApplyDamage(float damage)
+	{
+		
 	}
 	void Actor::CenterPivot()
 	{

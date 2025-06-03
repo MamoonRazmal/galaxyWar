@@ -27,19 +27,20 @@ void ly::HealthComponent::ChangeHealth(float amt)
 		{
 			HealthEmpty();
 		}
-		else
-			HealthRegain(amt);
+		
+
+		onTakenDamage.Broadcast(amt, mHealth, mMaxHealth);
 	}
 }
 
 void ly::HealthComponent::TakenDamage(float amount)
 {
-	LOG("Taken damage %f, now health is %f/%f", amount,mHealth,mMaxHealth);
+	onTakenDamage.Broadcast(amount, mHealth, mMaxHealth);
 }
 
 void ly::HealthComponent::HealthEmpty()
 {
-	LOG("Dead");
+	onHealthEmpty.Broadcast();
 }
 
 void ly::HealthComponent::HealthRegain(float heal)

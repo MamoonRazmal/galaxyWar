@@ -10,6 +10,10 @@ namespace ly
 		float getHealth() const { return mHealth; };
 		float getMaxHealth()const { return mMaxHealth; };
 		Delegate<float, float, float>OnHealthChanged;
+		//mHealthComp.OnHealthChanged.Broadcast(11, 89, 100);
+		Delegate<float, float, float>onTakenDamage;
+		Delegate<>onHealthEmpty;
+
 		
 	private:
 		float mHealth;

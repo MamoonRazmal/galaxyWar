@@ -10,8 +10,13 @@ namespace ly
 		void SetSpeed(float speed);
 		virtual void Tick(float deltaTime)override;
 		virtual void BeginPlay()override;
+		float getDamage() const
+		{
+			return mDamage;
+		}
 	private:
 		void Move(float deltaTime);
+		virtual void OnActorBeginOverlap(Actor* other) override;
 		Actor* mOwner;
 		float mSpeed;
 		float mDamage;

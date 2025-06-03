@@ -14,18 +14,19 @@ namespace ly
 	}
 
 
-	void ly::Object::Destroy()
+	void Object::Destroy()
 	{
 		onDestroy.Broadcast(this);
 		mIsPendingDestroy = true;
+		LOG("your ship should be destroyed");
 
 	}
 
-	weak<Object> ly::Object::GetSelfWeakRef()
+	weak<Object> Object::GetSelfWeakRef()
 	{
 		return weak_from_this();
 	}
-	weak<const Object> ly::Object::GetSelfWeakRef() const
+	weak<const Object> Object::GetSelfWeakRef() const
 	{
 		return weak_from_this();
 	}

@@ -1,17 +1,19 @@
 #pragma once
-#include "framework/Core.h"
-#include "framework/Object.h"
 #include <functional>
+#include "framework/Core.h"
+//#include "framework/Object.h"
+
 namespace ly
 {
+	class Object;
 	template<typename... Args>
 	class Delegate
 	{
 	public:
 		template<typename ClassName>
-		void BindAction(weak<Object> obj, void(ClassName::* callback)(Args...))
+		void BindAction(weak<Object> obj, void(ClassName::*callback)(Args...))
 		{
-			std::function<bool(Args...)> callbackFunc = [obj, callback](Args...args)->bool
+			std::function<bool(Args...)> callbackFunc = [obj, callback](Args... args)->bool
 				{
 					if (!obj.expired())
 					{
@@ -24,9 +26,9 @@ namespace ly
 		}
 		void Broadcast(Args... args)
 		{
-			for (auto iter = mCallbacks.begin();iter != mCallbacks.end();)
+			for  ( auto iter = mCallbacks.begin();iter != mCallbacks.end(); )
 			{
-				if ((*iter)(args...))
+				if((*iter)(args...))
 				{
 					++iter;
 				}
@@ -35,6 +37,7 @@ namespace ly
 					iter = mCallbacks.erase(iter);
 
 				}
+				
 			}
 		}
 

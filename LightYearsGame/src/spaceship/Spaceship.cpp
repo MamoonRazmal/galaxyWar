@@ -3,10 +3,12 @@
 
 
 
+
 namespace ly
 {
 	Spaceship::Spaceship(World* ownworld, const std::string& texturePath):Actor{ownworld,texturePath},mVelocity{},mHealthComp{100.f,100.f}
 	{
+		
 	}
 
 	void Spaceship::Tick(float deltaTime)
@@ -35,12 +37,29 @@ namespace ly
 		SetEnablePhysics(true);
 		weak<Object> selfRef = GetSelfWeakRef();
 		mHealthComp.OnHealthChanged.BindAction(GetSelfWeakRef(), &Spaceship::OnHealthChanged);
-		mHealthComp.OnHealthChanged.Broadcast(11,89,100);
+		mHealthComp.onTakenDamage.BindAction(GetSelfWeakRef(), &Spaceship::OnTakenDamage);
+		mHealthComp.onHealthEmpty.BindAction(GetSelfWeakRef(), &Spaceship::Blow);
+		
+	}
+
+	void Spaceship::ApplyDamage(float amt)
+	{
+		mHealthComp.ChangeHealth(-amt);
 	}
 
 	void Spaceship::OnHealthChanged(float amt, float health, float maxhealth)
 	{
 		LOG("healthchanged by :%f and now is %f/%f", amt, health, maxhealth);
+	}
+
+	void Spaceship::OnTakenDamage(float amt, float health, float maxhealth)
+	{
+
+	}
+
+	void Spaceship::Blow()
+	{
+		Destroy();
 	}
 
 }
